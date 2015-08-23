@@ -150,6 +150,7 @@
         <module>jetty-embedded-7</module>
         <module>jetty-embedded-8</module>
         <module>jetty-embedded-9</module>
+        <module>jetty-managed-9</module>
         <module>jetty-common</module>
     </modules>
 

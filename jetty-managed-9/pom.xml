@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <artifactId>arquillian-parent-jetty</artifactId>
+    <groupId>org.jboss.arquillian.container</groupId>
+    <version>1.0.0.Final-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>arquillian-jetty-managed-9</artifactId>
+  <name>Arquillian Container Jetty Managed 9.x</name>
+  <description>Jetty Managed 9.x container integration for the Arquillian project</description>
+
+  <properties>
+    <version.jetty>9.2.13.v20150730</version.jetty>
+
+    <test.jetty.home>${project.build.directory}/cargo/installs/jetty-distribution-${version.jetty}/jetty-distribution-${version.jetty}</test.jetty.home>
+    <test.jetty.base>${project.build.directory}/cargo/configurations/jetty9x</test.jetty.base>
+
+    <test.http.port>8080</test.http.port>
+    <test.jmx.port>8050</test.jmx.port>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>3.0.1</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.arquillian.container</groupId>
+      <artifactId>arquillian-jetty-common</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <!-- org.jboss.arquillian -->
+    <dependency>
+      <groupId>org.jboss.arquillian.container</groupId>
+      <artifactId>arquillian-container-spi</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.arquillian.container</groupId>
+      <artifactId>arquillian-container-test-spi</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.arquillian.protocol</groupId>
+      <artifactId>arquillian-protocol-servlet</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.arquillian.testenricher</groupId>
+      <artifactId>arquillian-testenricher-cdi</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.arquillian.testenricher</groupId>
+      <artifactId>arquillian-testenricher-resource</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.arquillian.testenricher</groupId>
+      <artifactId>arquillian-testenricher-initialcontext</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.arquillian.junit</groupId>
+      <artifactId>arquillian-junit-container</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <!-- Jetty 9.x has a Java 7 minimum requirement -->
+            <source>1.7</source>
+            <target>1.7</target>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.codehaus.cargo</groupId>
+          <artifactId>cargo-maven2-plugin</artifactId>
+          <version>1.4.15</version>
+          <executions>
+            <execution>
+              <id>install-container</id>
+              <phase>pre-integration-test</phase>
+              <goals>
+                <goal>configure</goal>
+              </goals>
+              <configuration>
+                <configuration>
+                  <properties>
+                    <cargo.servlet.port>${test.http.port}</cargo.servlet.port>
+                  </properties>
+                  <!--<configfiles>-->
+                    <!--<configfile>-->
+                      <!--<file>${project.build.testOutputDirectory}/tomcat-users.xml</file>-->
+                      <!--<toDir>conf</toDir>-->
+                    <!--</configfile>-->
+                  <!--</configfiles>-->
+                </configuration>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.cargo</groupId>
+        <artifactId>cargo-maven2-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>install-container</id>
+            <configuration>
+              <container>
+                <containerId>jetty9x</containerId>
+                <zipUrlInstaller>
+                  <url>https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/${version.jetty}/jetty-distribution-${version.jetty}.zip</url>
+                </zipUrlInstaller>
+              </container>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

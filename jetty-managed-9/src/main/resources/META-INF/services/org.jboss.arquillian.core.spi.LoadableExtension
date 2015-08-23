@@ -1,0 +1,1 @@
+org.jboss.arquillian.container.jetty.managed.Jetty9ManagedExtension
